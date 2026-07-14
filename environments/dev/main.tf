@@ -15,3 +15,12 @@ module "vpc" {
   availability_zone_1 = var.availability_zone_1
   availability_zone_2 = var.availability_zone_2
 }
+
+module "security_group" {
+  source = "../../modules/security-group"
+
+  project_name = var.project_name
+  environment  = var.environment
+
+  vpc_id = module.vpc.vpc_id
+}
