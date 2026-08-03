@@ -20,8 +20,3 @@ variable "alb_security_group_ids" {
   type        = string
 }
 
-variable "instance_id" {
-  description = "EC2 Instance ID to register with the target group"
-  type        = string
-
-}
