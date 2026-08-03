@@ -40,10 +40,11 @@ module "ec2" {
   project_name = var.project_name
   environment  = var.environment
 
-  private_subnet_id     = module.vpc.private_subnet_ids[0]
+  private_subnet_ids    = module.vpc.private_subnet_ids
   ec2_security_group_id = module.security_group.ec2_security_group_id
   instance_profile_name = module.iam.instance_profile_name
   instance_type         = "t3.micro"
+  target_group_arn      = module.alb.target_group_arn
 }
 
 module "alb" {
@@ -55,5 +56,4 @@ module "alb" {
   vpc_id                 = module.vpc.vpc_id
   public_subnet_ids      = module.vpc.public_subnet_ids
   alb_security_group_ids = module.security_group.alb_security_group_id
-  instance_id            = module.ec2.instance_id
 }
