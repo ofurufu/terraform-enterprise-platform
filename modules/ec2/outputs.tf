@@ -9,7 +9,6 @@ output "launch_template_latest_version" {
 
 }
 
-output "instance_id" {
-  description = "EC2 Instance ID"
-  value       = aws_instance.app.id
+output "autoscaling_group_name" {
+  value = aws_autoscaling_group.app.name
 }

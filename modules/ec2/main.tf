@@ -69,19 +69,48 @@ resource "aws_launch_template" "app" {
 
   update_default_version = true
 }
+resource "aws_autoscaling_group" "app" {
+  name = "${var.project_name}-${var.environment}-asg"
 
-resource "aws_instance" "app" {
-  subnet_id = var.private_subnet_id
+  min_size         = 1
+  max_size         = 2
+  desired_capacity = 1
+
+  vpc_zone_identifier = var.private_subnet_ids
+
+  target_group_arns = [
+    var.target_group_arn
+  ]
+
+  health_check_type         = "ELB"
+  health_check_grace_period = 300
 
   launch_template {
     id      = aws_launch_template.app.id
     version = "$Latest"
   }
 
-  tags = {
-    Name        = "${var.project_name}-${var.environment}-app-server"
-    Project     = var.project_name
-    Environment = var.environment
-    ManagedBy   = "Terraform"
+  tag {
+    key                 = "Name"
+    value               = "${var.project_name}-${var.environment}-app-server"
+    propagate_at_launch = true
+  }
+
+  tag {
+    key                 = "Project"
+    value               = var.project_name
+    propagate_at_launch = true
+  }
+
+  tag {
+    key                 = "Environment"
+    value               = var.environment
+    propagate_at_launch = true
+  }
+
+  tag {
+    key                 = "ManagedBy"
+    value               = "Terraform"
+    propagate_at_launch = true
   }
 }

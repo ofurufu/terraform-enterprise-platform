@@ -6,8 +6,13 @@ variable "environment" {
   type = string
 }
 
-variable "private_subnet_id" {
-  description = "Private subnet for the EC2"
+variable "private_subnet_ids" {
+  description = "Private subnet IDs"
+  type        = list(string)
+}
+
+variable "target_group_arn" {
+  description = "ALB Target Group ARN"
   type        = string
 }
 
