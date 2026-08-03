@@ -38,6 +38,7 @@ resource "aws_launch_template" "app" {
   }
 
   vpc_security_group_ids = [var.ec2_security_group_id]
+  user_data = base64encode(file("${path.module}/userdata.sh"))
 
   block_device_mappings {
     device_name = "/dev/xvda"
@@ -74,7 +75,7 @@ resource "aws_instance" "app" {
 
   launch_template {
     id      = aws_launch_template.app.id
-    version = aws_launch_template.app.latest_version
+    version = "$Latest"
   }
 
   tags = {
