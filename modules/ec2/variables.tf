@@ -30,3 +30,8 @@ variable "instance_type" {
   description = "EC2 Instance type"
   type        = string
 }
+
+variable "ami_id" {
+  description = "Amazon Linux 2023 AMI ID for the EC2 launch template"
+  type        = string
+}

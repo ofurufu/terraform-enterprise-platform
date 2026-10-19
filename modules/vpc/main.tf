@@ -9,38 +9,38 @@ resource "aws_vpc" "this" {
 }
 
 resource "aws_subnet" "public_1" {
-  vpc_id                          = aws_vpc.this.id
-  cidr_block                      = var.public_subnet_1
+  vpc_id                  = aws_vpc.this.id
+  cidr_block              = var.public_subnet_1
   map_public_ip_on_launch = true
-  availability_zone               = var.availability_zone_1
+  availability_zone       = var.availability_zone_1
   tags = {
     Name = "${var.project_name}-${var.environment}-public_1"
   }
 }
 
 resource "aws_subnet" "public_2" {
-  vpc_id                          = aws_vpc.this.id
-  cidr_block                      = var.public_subnet_2
+  vpc_id                  = aws_vpc.this.id
+  cidr_block              = var.public_subnet_2
   map_public_ip_on_launch = true
-  availability_zone               = var.availability_zone_2
+  availability_zone       = var.availability_zone_2
   tags = {
     Name = "${var.project_name}-${var.environment}-public_2"
   }
 }
 
 resource "aws_subnet" "private_1" {
-  vpc_id                          = aws_vpc.this.id
-  cidr_block                      = var.private_subnet_1
-  availability_zone               = var.availability_zone_1
+  vpc_id            = aws_vpc.this.id
+  cidr_block        = var.private_subnet_1
+  availability_zone = var.availability_zone_1
   tags = {
     Name = "${var.project_name}-${var.environment}-private_1"
   }
 }
 
 resource "aws_subnet" "private_2" {
-  vpc_id                          = aws_vpc.this.id
-  cidr_block                      = var.private_subnet_2
-  availability_zone               = var.availability_zone_2
+  vpc_id            = aws_vpc.this.id
+  cidr_block        = var.private_subnet_2
+  availability_zone = var.availability_zone_2
   tags = {
     Name = "${var.project_name}-${var.environment}-private_2"
   }
@@ -91,9 +91,9 @@ resource "aws_route_table" "private" {
 
 
 resource "aws_route" "private_internet_access" {
-  route_table_id = aws_route_table.private.id
+  route_table_id         = aws_route_table.private.id
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id = aws_nat_gateway.this.id
+  nat_gateway_id         = aws_nat_gateway.this.id
 }
 resource "aws_route_table_association" "private_1" {
   subnet_id      = aws_subnet.private_1.id
@@ -108,23 +108,23 @@ resource "aws_route_table_association" "private_2" {
 resource "aws_eip" "nat" {
   domain = "vpc"
   tags = {
-    Name = "${var.project_name}-${var.environment}"
-    Environment = "var.environment"
-    ManagedBy = "Terraform"
+    Name        = "${var.project_name}-${var.environment}"
+    Environment = var.environment
+    ManagedBy   = "Terraform"
   }
 }
 
 resource "aws_nat_gateway" "this" {
   allocation_id = aws_eip.nat.id
-  subnet_id = aws_subnet.public_1.id
+  subnet_id     = aws_subnet.public_1.id
 
-  depends_on = [ 
-    aws_internet_gateway.this 
-    ]
-  
+  depends_on = [
+    aws_internet_gateway.this
+  ]
+
   tags = {
-    Name = "${var.project_name}-${var.environment}-nat-gateway"
-    Environment = "var.environment"
-    ManagedBy = "Terraform" 
+    Name        = "${var.project_name}-${var.environment}-nat-gateway"
+    Environment = var.environment
+    ManagedBy   = "Terraform"
   }
 }

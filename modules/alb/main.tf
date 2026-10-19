@@ -1,5 +1,5 @@
 resource "aws_alb" "app" {
-  name               = "${var.project_name}-${var.environment}-alb"
+  name               = "${var.environment}-enterprise-alb"
   internal           = false
   load_balancer_type = "application"
 
@@ -43,9 +43,9 @@ resource "aws_lb_target_group" "app" {
 
 resource "aws_lb_listener" "http" {
   load_balancer_arn = aws_alb.app.arn
-  
-  port              = 80
-  protocol          = "HTTP"
+
+  port     = 80
+  protocol = "HTTP"
 
   default_action {
     type             = "forward"

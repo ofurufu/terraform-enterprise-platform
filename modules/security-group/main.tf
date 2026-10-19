@@ -23,17 +23,6 @@ resource "aws_vpc_security_group_ingress_rule" "alb_http" {
   description       = "Allow HTTP from internet"
 }
 
-# HTTPS (443)
-
-resource "aws_vpc_security_group_ingress_rule" "alb_https" {
-  security_group_id = aws_security_group.alb.id
-  cidr_ipv4         = "0.0.0.0/0"
-  from_port         = 443
-  to_port           = 443
-  ip_protocol       = "tcp"
-  description       = "Allow HTTPS from internet"
-}
-
 # Egress Rule
 
 resource "aws_vpc_security_group_egress_rule" "alb_outbound" {
@@ -46,7 +35,7 @@ resource "aws_vpc_security_group_egress_rule" "alb_outbound" {
 }
 
 resource "aws_security_group" "ec2" {
-  name        = "${var.project_name} -${var.environment}-ec2-sg"
+  name        = "${var.project_name}-${var.environment}-ec2-sg"
   description = "Security group for ec2 application servers"
   vpc_id      = var.vpc_id
 

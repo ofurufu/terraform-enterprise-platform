@@ -21,3 +21,9 @@ Thumbs.db
 # Sensitive files
 *.pem
 *.key
+
+*.tfvars
+*.tfvars.json
+# Terraform saved plan files
+tfplan
+*.tfplan

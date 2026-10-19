@@ -44,7 +44,16 @@ module "ec2" {
   ec2_security_group_id = module.security_group.ec2_security_group_id
   instance_profile_name = module.iam.instance_profile_name
   instance_type         = "t3.micro"
+  ami_id                = "ami-0cbf5991d1b4af4b6"
   target_group_arn      = module.alb.target_group_arn
+}
+
+module "autoscaling_policy" {
+  source = "../../modules/autoscaling-policy"
+
+  project_name           = var.project_name
+  environment            = var.environment
+  autoscaling_group_name = module.ec2.autoscaling_group_name
 }
 
 module "alb" {
